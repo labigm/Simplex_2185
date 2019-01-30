@@ -14,7 +14,7 @@
     <ProjectGuid>{BB29A203-127B-46E9-A5B3-925715D5AA34}</ProjectGuid>
     <RootNamespace>00_Sandbox</RootNamespace>
     <ProjectName>00_Sandbox</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

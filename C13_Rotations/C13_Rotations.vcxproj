@@ -14,7 +14,7 @@
     <ProjectGuid>{8C11DBDA-D14E-43F4-8F33-C2206969681C}</ProjectGuid>
     <RootNamespace>C13_Rotations</RootNamespace>
     <ProjectName>C13_Rotations</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

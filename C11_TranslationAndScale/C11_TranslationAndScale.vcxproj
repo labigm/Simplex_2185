@@ -14,7 +14,7 @@
     <ProjectGuid>{F8D2226D-0FEB-4B92-9F76-59DBB6936F5C}</ProjectGuid>
     <RootNamespace>C11_TranslationAndScale</RootNamespace>
     <ProjectName>C11_TranslationAndScale</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

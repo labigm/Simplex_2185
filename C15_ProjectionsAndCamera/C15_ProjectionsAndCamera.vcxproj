@@ -14,7 +14,7 @@
     <ProjectGuid>{82D1372E-2527-4994-BB82-F2EF0A25A5BF}</ProjectGuid>
     <RootNamespace>C15_ProjectionsAndCamera</RootNamespace>
     <ProjectName>C15_ProjectionsAndCamera</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

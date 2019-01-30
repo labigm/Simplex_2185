@@ -14,7 +14,7 @@
     <ProjectGuid>{BE52867A-92EA-479A-9F73-1E96168F9A7B}</ProjectGuid>
     <RootNamespace>01_Playgroud</RootNamespace>
     <ProjectName>01_Playgroud</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

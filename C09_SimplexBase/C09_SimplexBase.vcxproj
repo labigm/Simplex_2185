@@ -14,7 +14,7 @@
     <ProjectGuid>{CEBD13BA-58AB-4983-8281-2FD4A23876F5}</ProjectGuid>
     <RootNamespace>C09_SimplexBase</RootNamespace>
     <ProjectName>C09_SimplexBase</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

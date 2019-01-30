@@ -14,7 +14,7 @@
     <ProjectGuid>{413BF597-600A-43A8-8A82-CB60E2DCDD95}</ProjectGuid>
     <RootNamespace>A05 - SAT</RootNamespace>
     <ProjectName>A05 - SAT</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

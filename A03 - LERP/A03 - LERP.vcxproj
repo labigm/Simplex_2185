@@ -14,7 +14,7 @@
     <ProjectGuid>{63E8C63D-1CCD-43F2-9E0F-1510677DE856}</ProjectGuid>
     <RootNamespace>A03 - LERP</RootNamespace>
     <ProjectName>A03 - LERP</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

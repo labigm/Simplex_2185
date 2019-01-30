@@ -71,7 +71,7 @@
     <ProjectGuid>{E745E25C-0143-42AC-A486-1395A4C972AE}</ProjectGuid>
     <RootNamespace>BasicX</RootNamespace>
     <ProjectName>BasicX</ProjectName>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

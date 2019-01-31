@@ -4,6 +4,11 @@ AppClass::AppClass(std::string a_windowName) : m_sWindowName(a_windowName) {}
 AppClass::AppClass(AppClass const& input) {}
 AppClass& AppClass::operator=(AppClass const& input) { return *this; }
 AppClass::~AppClass(void){ Release(); }
+bool showComplimentRed = false;
+bool showComplimentBlue = false;
+bool showComplimentGreen = false;
+bool showComplimentSpectrum = false;
+//Owen Palzer and Seth Lambert
 void AppClass::Run(void)
 {
 	//Initialize the system with the fields recollected by the constructor
@@ -67,7 +72,7 @@ void AppClass::InitOpenGL(void)
 }
 void AppClass::InitShaders(void)
 {
-	m_uShaderProgramID = LoadShaders("Shaders//BasicColor.vs", "Shaders//BasicColor.fs");
+	m_uShaderProgramID = LoadShaders("Shaders//BasicColor.vs", "Shaders//Compliments.fs");
 	glUseProgram(m_uShaderProgramID);
 }
 void AppClass::InitVariables(void)
@@ -105,16 +110,42 @@ void AppClass::InitVariables(void)
 }
 void AppClass::ProcessKeyboard(sf::Event a_event)
 {
-	if (a_event.key.code == sf::Keyboard::Key::Escape)//Event says I pressed the Escape key
-		m_bRunning = false;
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) //I am currently pressing the Num1 (not the same as above)
-		m_v3Color = glm::vec3(1.0f, 0.0f, 0.0f);
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
-		m_v3Color = glm::vec3(0.0f, 1.0f, 0.0f);
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3))
-		m_v3Color = glm::vec3(0.0f, 0.0f, 1.0f);
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num0))
-		m_v3Color = glm::vec3(-1.0f, -1.0f, -1.0f);
+	//Added conditions and booleans to determin whether to show the RGB or CMY color for each key
+		if (a_event.key.code == sf::Keyboard::Key::Escape)//Event says I pressed the Escape key
+			m_bRunning = false;
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)&&showComplimentRed) { //I am currently pressing the Num1 (not the same as above)
+			m_v3Color = glm::vec3(1.0f, 0.0f, 0.0f);
+			showComplimentRed = !showComplimentRed;
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1) && !showComplimentRed) { //I am currently pressing the Num1 (not the same as above)
+			m_v3Color = glm::vec3(0.0f, 1.0f, 1.0f);
+			showComplimentRed = !showComplimentRed;
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2) && showComplimentGreen) {
+			m_v3Color = glm::vec3(0.0f, 1.0f, 0.0f);
+			showComplimentGreen = !showComplimentGreen;
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2) && !showComplimentGreen) {
+			m_v3Color = glm::vec3(1.0f, 0.0f, 1.0f);
+			showComplimentGreen = !showComplimentGreen;
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3) && showComplimentBlue) {
+			m_v3Color = glm::vec3(0.0f, 0.0f, 1.0f);
+			showComplimentBlue = !showComplimentBlue;
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num3) && !showComplimentBlue) {
+			m_v3Color = glm::vec3(1.0f, 1.0f, 0.0f);
+			showComplimentBlue = !showComplimentBlue;
+		}
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num0) && showComplimentSpectrum) {
+			m_v3Color = glm::vec3(-1.0f, -1.0f, -1.0f);
+			showComplimentSpectrum = !showComplimentSpectrum;
+		}
+		//Send in another false color to signal to flip the spectrum
+		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num0) && !showComplimentSpectrum) {
+			m_v3Color = glm::vec3(-2.0f, -2.0f, -2.0f);
+			showComplimentSpectrum = !showComplimentSpectrum;
+		}
 }
 void AppClass::Display(void)
 {

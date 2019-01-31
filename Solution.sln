@@ -115,6 +115,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01_Playgroud", "01_Playgrou
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "00_Sandbox", "00_Sandbox\00_Sandbox.vcxproj", "{BB29A203-127B-46E9-A5B3-925715D5AA34}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E03 - Shaders", "E03 - Shaders\E03 - Shaders.vcxproj", "{3E3EA732-0226-4950-B013-ABBDC3C2A521}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -311,6 +313,10 @@ Global
 		{BB29A203-127B-46E9-A5B3-925715D5AA34}.Debug|x86.Build.0 = Debug|Win32
 		{BB29A203-127B-46E9-A5B3-925715D5AA34}.Release|x86.ActiveCfg = Release|Win32
 		{BB29A203-127B-46E9-A5B3-925715D5AA34}.Release|x86.Build.0 = Release|Win32
+		{3E3EA732-0226-4950-B013-ABBDC3C2A521}.Debug|x86.ActiveCfg = Debug|Win32
+		{3E3EA732-0226-4950-B013-ABBDC3C2A521}.Debug|x86.Build.0 = Debug|Win32
+		{3E3EA732-0226-4950-B013-ABBDC3C2A521}.Release|x86.ActiveCfg = Release|Win32
+		{3E3EA732-0226-4950-B013-ABBDC3C2A521}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -363,6 +369,7 @@ Global
 		{44D2C07B-798D-461B-9019-DFB240593888} = {EE0E027C-366F-4685-94D5-0EA5F6870B1B}
 		{BE52867A-92EA-479A-9F73-1E96168F9A7B} = {A586CAA1-C864-488E-8301-D374FFD607C9}
 		{BB29A203-127B-46E9-A5B3-925715D5AA34} = {A586CAA1-C864-488E-8301-D374FFD607C9}
+		{3E3EA732-0226-4950-B013-ABBDC3C2A521} = {78C06654-E155-40A8-97F7-7BA1E50977C5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A36545A6-DAAA-4856-BDB7-57C29F88BC6B}

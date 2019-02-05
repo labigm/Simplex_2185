@@ -135,7 +135,7 @@ void AppClass::Display(void)
 
 	//read uniforms and send values
 	GLuint MVP = glGetUniformLocation(m_uShaderProgramID, "MVP");//Model View Projection
-	glUniformMatrix4fv(MVP, 1, GL_FALSE, glm::value_ptr(m4Projection * m4View * m_m4Model));
+	glUniformMatrix4fv(MVP, 1, GL_FALSE, glm::value_ptr(m4Projection * m4View * m_m4Model));//the order of m4Projection, m4View, and m_m4Model is important here
 	
 	GLuint SolidColor = glGetUniformLocation(m_uShaderProgramID, "SolidColor"); //custom color of the shape
 	glUniform3f(SolidColor, m_v3Color.r, m_v3Color.g, m_v3Color.b);

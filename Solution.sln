@@ -117,6 +117,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "00_Sandbox", "00_Sandbox\00
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E03 - Shaders", "E03 - Shaders\E03 - Shaders.vcxproj", "{3E3EA732-0226-4950-B013-ABBDC3C2A521}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "E05_Translation", "E05_Translation\E05_Translation.vcxproj", "{6F69FB98-09C5-41C0-B213-CF36EBD61144}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -317,6 +319,10 @@ Global
 		{3E3EA732-0226-4950-B013-ABBDC3C2A521}.Debug|x86.Build.0 = Debug|Win32
 		{3E3EA732-0226-4950-B013-ABBDC3C2A521}.Release|x86.ActiveCfg = Release|Win32
 		{3E3EA732-0226-4950-B013-ABBDC3C2A521}.Release|x86.Build.0 = Release|Win32
+		{6F69FB98-09C5-41C0-B213-CF36EBD61144}.Debug|x86.ActiveCfg = Debug|Win32
+		{6F69FB98-09C5-41C0-B213-CF36EBD61144}.Debug|x86.Build.0 = Debug|Win32
+		{6F69FB98-09C5-41C0-B213-CF36EBD61144}.Release|x86.ActiveCfg = Release|Win32
+		{6F69FB98-09C5-41C0-B213-CF36EBD61144}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -370,6 +376,7 @@ Global
 		{BE52867A-92EA-479A-9F73-1E96168F9A7B} = {A586CAA1-C864-488E-8301-D374FFD607C9}
 		{BB29A203-127B-46E9-A5B3-925715D5AA34} = {A586CAA1-C864-488E-8301-D374FFD607C9}
 		{3E3EA732-0226-4950-B013-ABBDC3C2A521} = {78C06654-E155-40A8-97F7-7BA1E50977C5}
+		{6F69FB98-09C5-41C0-B213-CF36EBD61144} = {78C06654-E155-40A8-97F7-7BA1E50977C5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A36545A6-DAAA-4856-BDB7-57C29F88BC6B}

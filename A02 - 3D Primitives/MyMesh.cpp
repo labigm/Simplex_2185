@@ -345,17 +345,19 @@ void MyMesh::GenerateTube(float a_fOuterRadius, float a_fInnerRadius, float a_fH
 	Init();
 
 	for (int i = 0; i < a_nSubdivisions; i++) {
-		vector3 point1();
-		vector3 point2();
-		vector3 point3();
-		vector3 point4();
-		vector3 point5();
-		vector3 point6();
-		vector3 point7();
-		vector3 point8();
+		vector3 point1(a_fInnerRadius*cos(2*PI/a_nSubdivisions*i), 0 - a_fHeight / 2, a_fInnerRadius*sin(2 * PI / a_nSubdivisions * i));
+		vector3 point2(a_fOuterRadius*cos(2 * PI / a_nSubdivisions * i), 0 - a_fHeight / 2, a_fOuterRadius*sin(2 * PI / a_nSubdivisions * i));
+		vector3 point3(a_fInnerRadius*cos(2 * PI / a_nSubdivisions * (i+1)), 0 - a_fHeight / 2, a_fInnerRadius*sin(2 * PI / a_nSubdivisions * (i + 1)));
+		vector3 point4(a_fOuterRadius*cos(2 * PI / a_nSubdivisions * (i + 1)), 0 - a_fHeight / 2, a_fOuterRadius*sin(2 * PI / a_nSubdivisions * (i + 1)));
+		vector3 point5(a_fInnerRadius*cos(2 * PI / a_nSubdivisions * i), a_fHeight / 2, a_fInnerRadius*sin(2 * PI / a_nSubdivisions * i));
+		vector3 point6(a_fOuterRadius*cos(2 * PI / a_nSubdivisions * i), a_fHeight / 2, a_fOuterRadius*sin(2 * PI / a_nSubdivisions * i));
+		vector3 point7(a_fInnerRadius*cos(2 * PI / a_nSubdivisions * (i + 1)),a_fHeight / 2, a_fInnerRadius*sin(2 * PI / a_nSubdivisions * (i + 1)));
+		vector3 point8(a_fOuterRadius*cos(2 * PI / a_nSubdivisions * (i + 1)), a_fHeight / 2, a_fOuterRadius*sin(2 * PI / a_nSubdivisions * (i + 1)));
 
-	
-	
+		AddQuad(point2,point4, point1, point3);
+		AddQuad(point6, point8, point2, point4);
+		AddQuad(point5,point7,point6,point8);
+		AddQuad(point1, point3, point5, point7);
 	
 	}
 

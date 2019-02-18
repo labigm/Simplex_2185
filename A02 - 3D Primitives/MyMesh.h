@@ -17,6 +17,7 @@ using namespace Simplex;
 #include "SFML\Window.hpp"
 #include "SFML\Graphics.hpp"
 #include "SFML\OpenGL.hpp"
+#include <vector>
 
 #include "ControllerConfiguration.h"
 #include "imgui\ImGuiObject.h"
@@ -211,6 +212,8 @@ public:
 	OUTPUT: ---
 	*/
 	void GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Color = C_WHITE);
+	std::vector<std::vector<vector3>> GeneratePyramid(float a_fRadius, vector3 a_v3Color=C_WHITE);
+
 #pragma endregion
 };
 

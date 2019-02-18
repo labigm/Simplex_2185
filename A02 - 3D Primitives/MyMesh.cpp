@@ -275,9 +275,15 @@ void MyMesh::GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivisions,
 	Release();
 	Init();
 
-	// Replace this with your code
-	GenerateCube(a_fRadius * 2.0f, a_v3Color);
-	// -------------------------------
+
+	vector3 peak(0.0f, a_fHeight / 2, 0.0f);
+	vector3 centerBase(0.0f, 0.0f-a_fHeight / 2, 0.0f);
+	for (int i = 0; i < a_nSubdivisions; i++) {
+		vector3 point1(a_fRadius*cos(PI * 2 / a_nSubdivisions * i), 0.0f - a_fHeight/2, a_fRadius*sin(PI * 2 / a_nSubdivisions * i));
+		vector3 point2(a_fRadius*cos(PI * 2 / a_nSubdivisions * (i+1)), 0.0f - a_fHeight/2, a_fRadius*sin(PI * 2 / a_nSubdivisions * (i + 1)));
+		AddTri(peak,point2,point1);
+		AddTri(centerBase, point1, point2);
+	}
 
 	// Adding information about color
 	CompleteMesh(a_v3Color);
@@ -299,9 +305,18 @@ void MyMesh::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubdivisi
 	Release();
 	Init();
 
-	// Replace this with your code
-	GenerateCube(a_fRadius * 2.0f, a_v3Color);
-	// -------------------------------
+	vector3 centerPeak(0.0f, a_fHeight / 2, 0.0f);
+	vector3 centerBase(0.0f, 0.0f - a_fHeight / 2, 0.0f);
+	for (int i = 0; i < a_nSubdivisions; i++) {
+		vector3 point1(a_fRadius*cos(PI * 2 / a_nSubdivisions * i), 0.0f - a_fHeight / 2, a_fRadius*sin(PI * 2 / a_nSubdivisions * i));
+		vector3 point2(a_fRadius*cos(PI * 2 / a_nSubdivisions * (i + 1)), 0.0f - a_fHeight / 2, a_fRadius*sin(PI * 2 / a_nSubdivisions * (i + 1)));
+		vector3 point3(a_fRadius*cos(PI * 2 / a_nSubdivisions * i), a_fHeight / 2, a_fRadius*sin(PI * 2 / a_nSubdivisions * i));
+		vector3 point4(a_fRadius*cos(PI * 2 / a_nSubdivisions * (i + 1)), a_fHeight / 2, a_fRadius*sin(PI * 2 / a_nSubdivisions * (i + 1)));
+
+		AddTri(centerPeak, point4, point3);
+		AddQuad(point2, point1, point4, point3);
+		AddTri(centerBase, point1, point2);
+	}
 
 	// Adding information about color
 	CompleteMesh(a_v3Color);
@@ -329,11 +344,22 @@ void MyMesh::GenerateTube(float a_fOuterRadius, float a_fInnerRadius, float a_fH
 	Release();
 	Init();
 
-	// Replace this with your code
-	GenerateCube(a_fOuterRadius * 2.0f, a_v3Color);
-	// -------------------------------
+	for (int i = 0; i < a_nSubdivisions; i++) {
+		vector3 point1();
+		vector3 point2();
+		vector3 point3();
+		vector3 point4();
+		vector3 point5();
+		vector3 point6();
+		vector3 point7();
+		vector3 point8();
 
-	// Adding information about color
+	
+	
+	
+	}
+
+
 	CompleteMesh(a_v3Color);
 	CompileOpenGL3X();
 }
@@ -383,14 +409,82 @@ void MyMesh::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Co
 	if (a_nSubdivisions > 6)
 		a_nSubdivisions = 6;
 
+
+	//debug purposes
+	//a_nSubdivisions = 1;
 	Release();
 	Init();
 
-	// Replace this with your code
-	GenerateCube(a_fRadius * 2.0f, a_v3Color);
-	// -------------------------------
 
-	// Adding information about color
+	//for posterity, the following code (the pyramid function included) was written out by hand on paper and, with the exception of three lines, worked 'out of the box'
+	//call a helper function to define a "D8" polyhedron to subdivide into a sphere
+	std::vector<std::vector<vector3>> polygons=GeneratePyramid(a_fRadius,a_v3Color);
+	
+	for (int i = 0; i < a_nSubdivisions; i++) {
+		std::vector<std::vector<vector3>> poly;
+		for (int j = 0; j < polygons.size(); j++) {
+			std::vector<vector3> tri1, tri2, tri3, tri4;
+			//create the midpoints on the triangles and push them out to the radius
+			vector3 AB = 0.5f*(polygons[j][0]+polygons[j][1]);
+			AB *= a_fRadius / glm::length(AB);
+			vector3 BC = 0.5f*(polygons[j][1] + polygons[j][2]);
+			BC *= a_fRadius / glm::length(BC);
+			vector3 CA = 0.5f*( polygons[j][2] + polygons[j][0]);
+			CA *= a_fRadius / glm::length(CA);
+			//create subdivided triangle 1/4
+			tri1.push_back(polygons[j][0]);
+			tri1.push_back(AB);
+			tri1.push_back(CA);
+			//create subdivided triangle 2/4
+			tri2.push_back(AB);
+			tri2.push_back(polygons[j][1]);
+			tri2.push_back(BC);
+			//create subdivided triangle 3/4
+			tri3.push_back(CA);
+			tri3.push_back(BC);
+			tri3.push_back(polygons[j][2]);
+			//create subdivided triangle 4/4
+			tri4.push_back(AB);
+			tri4.push_back(BC);
+			tri4.push_back(CA);
+			//push all the triangles onto the poly vector
+			poly.push_back(tri1);
+			poly.push_back(tri2);
+			poly.push_back(tri3);
+			poly.push_back(tri4);
+		}
+		//replace the polygons in polygons with the ones in poly
+		polygons = poly;
+	}
+
+	for (int i = 0; i < polygons.size(); i++) {
+		//go through polygons and create triangles
+		AddTri(polygons[i][0], polygons[i][1], polygons[i][2]);
+	}
+
 	CompleteMesh(a_v3Color);
 	CompileOpenGL3X();
+}
+std::vector<std::vector<vector3 >> MyMesh::GeneratePyramid(float a_fRadius, vector3 a_v3Color) {
+	//a helper function to pre-define the 8 sided polyhedron that will become the sphere
+	//create a vector of vectors of vector3s. This vector will contain vectors of 3 points that form individual faces of the shape
+	std::vector<std::vector<vector3>> polygons;
+	//create the eight faces
+		for (float j = PI / 4; j < 2 * PI; j += PI/2) {
+			std::vector<vector3> face1;
+			face1.push_back(vector3(0.0f, 1.0f*a_fRadius, 0.0f));
+			face1.push_back(vector3(cos(j)*a_fRadius,0.0f,sin(j)*a_fRadius));
+			face1.push_back(vector3(cos(j+PI/2)*a_fRadius, 0.0f, sin(j + PI/2)*a_fRadius));
+			polygons.push_back(face1);
+		}
+		for (float j = PI / 4; j < 2 * PI; j += PI / 2) {
+			std::vector<vector3> face1;
+			face1.push_back(vector3(0.0f, -1.0f*a_fRadius, 0.0f));
+			face1.push_back(vector3(cos(j + PI / 2)*a_fRadius, 0.0f, sin(j + PI / 2)*a_fRadius));
+			face1.push_back(vector3(cos(j)*a_fRadius, 0.0f, sin(j)*a_fRadius));
+			polygons.push_back(face1);
+		}
+	
+	return polygons;
+
 }

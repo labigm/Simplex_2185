@@ -462,7 +462,7 @@ void MyMesh::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Co
 
 	for (int i = 0; i < polygons.size(); i++) {
 		//go through polygons and create triangles
-		AddTri(polygons[i][0], polygons[i][1], polygons[i][2]);
+		AddTri(polygons[i][0],  polygons[i][2], polygons[i][1]);
 	}
 
 	CompleteMesh(a_v3Color);

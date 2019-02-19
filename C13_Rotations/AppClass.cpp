@@ -27,16 +27,19 @@ void Application::Display(void)
 
 	matrix4 m4View = m_pCameraMngr->GetViewMatrix(); //view Matrix
 	matrix4 m4Projection = m_pCameraMngr->GetProjectionMatrix(); //Projection Matrix
-	
+	matrix4 m4Model=IDENTITY_M4;
 	//Get a timer
 	static uint uClock = m_pSystem->GenClock();
 	float fTimer = m_pSystem->GetTimeSinceStart(uClock);
 
 	//calculate the current position
-	matrix4 m4Rotation = glm::rotate(IDENTITY_M4, glm::radians(fTimer * 60.0f), vector3(0.0f, 0.0f, 1.0f));
-	matrix4 m4Model;
-	for (uint i = 0; i < 2500; ++i)
-		m4Model = m4Rotation * glm::translate(IDENTITY_M4, vector3(2.5f, 0.0f, 0.0f)) * glm::transpose(m4Rotation);
+	//matrix4 m4Rotation = glm::rotate(IDENTITY_M4, glm::radians(fTimer * 60.0f), vector3(0.0f, 0.0f, 1.0f));
+	
+	matrix4 m4Translation = glm::translate(vector3(1.0f, 0.0f, 0.0f));
+	matrix4 m4counterRotation = glm::rotate(IDENTITY_M4, glm::radians(fTimer*m_pSystem->GetFPS()), vector3(0.0f,0.0f,-1.0f));
+	matrix4 m4yAxisRotation = glm::rotate(IDENTITY_M4,glm::radians(fTimer*m_pSystem->GetFPS()),AXIS_Y);
+	m4Model = glm::rotate(IDENTITY_M4, glm::radians(fTimer*m_pSystem->GetFPS()), AXIS_Z)*m4Translation*m4counterRotation*m4yAxisRotation;
+	//rather than having a counter-rotation matrix, you could use the inverse or transpose of the rotation matrix (inverse is least efficient)
 	
 	/*
 	//extra part, how to rotate around a point (in this case the base of the cone)

@@ -428,7 +428,7 @@ void MyMesh::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Co
 		for (int j = 0; j < polygons.size(); j++) {
 			std::vector<vector3> tri1, tri2, tri3, tri4;
 			//create the midpoints on the triangles and push them out to the radius
-			vector3 AB = 0.5f*(polygons[j][0]+polygons[j][1]);
+			vector3 AB = 0.5f*(polygons[j][0] + polygons[j][1]);
 			AB *= a_fRadius / glm::length(AB);
 			vector3 BC = 0.5f*(polygons[j][1] + polygons[j][2]);
 			BC *= a_fRadius / glm::length(BC);

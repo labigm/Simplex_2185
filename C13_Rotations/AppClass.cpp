@@ -36,9 +36,12 @@ void Application::Display(void)
 	//matrix4 m4Rotation = glm::rotate(IDENTITY_M4, glm::radians(fTimer * 60.0f), vector3(0.0f, 0.0f, 1.0f));
 	
 	matrix4 m4Translation = glm::translate(vector3(1.0f, 0.0f, 0.0f));
-	matrix4 m4counterRotation = glm::rotate(IDENTITY_M4, glm::radians(fTimer*m_pSystem->GetFPS()), vector3(0.0f,0.0f,-1.0f));
-	matrix4 m4yAxisRotation = glm::rotate(IDENTITY_M4,glm::radians(fTimer*m_pSystem->GetFPS()),AXIS_Y);
-	m4Model = glm::rotate(IDENTITY_M4, glm::radians(fTimer*m_pSystem->GetFPS()), AXIS_Z)*m4Translation*m4counterRotation*m4yAxisRotation;
+
+	glm::quat q1;
+	quaternion q2=glm::angleAxis(glm::radians(90.0f),AXIS_Z);
+
+	quaternion q3 = glm::mix(q1,q2, fTimer);
+
 	//rather than having a counter-rotation matrix, you could use the inverse or transpose of the rotation matrix (inverse is least efficient)
 	
 	/*
@@ -49,7 +52,7 @@ void Application::Display(void)
 	*/
 
 	// render the object
-	m_pMesh->Render(m4Projection, m4View, m4Model);
+	m_pMesh->Render(m4Projection, m4View, ToMatrix4(q3));
 	
 	// draw a skybox
 	m_pMeshMngr->AddSkyboxToRenderList();

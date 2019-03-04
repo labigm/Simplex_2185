@@ -1,4 +1,5 @@
 #include "AppClass.h"
+#include "MyCamera.h"
 using namespace Simplex;
 void Application::InitVariables(void)
 {
@@ -51,24 +52,33 @@ void Application::Display(void)
 	default:
 	case 1:
 		m_pCamera->ResetCamera();
+		//m_pCamera->SetPositionTargetAndUpward();
 		break;
 	case 2:
 		m_pCamera->ResetCamera();
+		m_pCamera->SetPerspective(false);
 		break;
 	case 3:
 		m_pCamera->ResetCamera();
+		m_pCamera->SetPositionTargetAndUpward(AXIS_X*25.0f,ZERO_V3,-1.0f*AXIS_Z);
 		break;
 	case 4:
 		m_pCamera->ResetCamera();
+		m_pCamera->SetPositionTargetAndUpward(AXIS_Z*-15.0f,ZERO_V3,AXIS_Y);
 		break;
 	case 5:
 		m_pCamera->ResetCamera();
+		m_pCamera->SetNearFar(vector2(7.0f,1000.0f));
+		m_pCamera->SetPositionTargetAndUpward(AXIS_Z*-15.0f, ZERO_V3, AXIS_Y);
 		break;
 	case 6:
 		m_pCamera->ResetCamera();
+		m_pCamera->SetNearFar(vector2(0.001f, 10.0f));
+		m_pCamera->SetPositionTargetAndUpward(AXIS_Z*-15.0f, ZERO_V3, AXIS_Y);
 		break;
 	case 7:
 		m_pCamera->ResetCamera();
+		m_pCamera->SetPositionTargetAndUpward(AXIS_Z*10.0f,AXIS_Z*-10.0f,-1.0f*AXIS_Y);
 		break;
 	}
 

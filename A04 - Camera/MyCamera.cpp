@@ -159,11 +159,13 @@ void MyCamera::MoveForward(float a_fDistance)
 }
 
 void MyCamera::MoveVertical(float a_fDistance){
+	//move in the up direction by the amount specified by a_fDistance
 	m_v3Position += m_v3Upward * a_fDistance;
 	m_v3Target += m_v3Upward * a_fDistance;
 	m_v3Above += m_v3Upward * a_fDistance;
-}//Needs to be defined
+}
 void MyCamera::MoveSideways(float a_fDistance){
+	//move in the right direction by the amount specified by a_fDistance
 	m_v3Position += m_v3Rightward * a_fDistance;
 	m_v3Target += m_v3Rightward * a_fDistance;
 	m_v3Above += m_v3Rightward * a_fDistance;

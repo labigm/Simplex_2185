@@ -369,6 +369,13 @@ void Application::CameraRotation(float a_fSpeed)
 		fAngleX += fDeltaMouse * a_fSpeed;
 	}
 	//Change the Yaw and the Pitch of the camera
+	quaternion yOrientationQuat=glm::angleAxis(fAngleY, AXIS_Y);
+	quaternion xOrientationQuat=glm::angleAxis(fAngleX,AXIS_X);
+
+
+
+	m_pCamera->SetAbove();
+	m_pCamera->SetTarget();
 	SetCursorPos(CenterX, CenterY);//Position the mouse in the center
 }
 //Keyboard

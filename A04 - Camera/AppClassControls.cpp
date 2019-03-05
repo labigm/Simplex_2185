@@ -375,8 +375,8 @@ void Application::CameraRotation(float a_fSpeed)
 
 	//Change the Yaw and the Pitch of the camera
 	//Rotate the orientation in the X and Y axes
-	quaternion yOrientationQuat=glm::angleAxis(glm::radians(fAngleY), m_pCamera->m_v3Upward*m_pCamera->GetOrientation());
-	quaternion xOrientationQuat=glm::angleAxis(glm::radians(fAngleX),m_pCamera->m_v3Rightward*m_pCamera->GetOrientation());
+	quaternion yOrientationQuat=glm::angleAxis(glm::radians(3.0f*fAngleY), AXIS_Y);
+	quaternion xOrientationQuat=glm::angleAxis(glm::radians(-3.0f*fAngleX),m_pCamera->m_v3Rightward*m_pCamera->GetOrientation());
 	m_pCamera->SetOrientation(yOrientationQuat);
 	m_pCamera->SetOrientation(xOrientationQuat);
 	

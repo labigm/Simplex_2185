@@ -121,7 +121,7 @@ void Simplex::MyCamera::ResetCamera(void)
 void Simplex::MyCamera::SetPositionTargetAndUpward(vector3 a_v3Position, vector3 a_v3Target, vector3 a_v3Upward)
 {
 	m_v3Position = a_v3Position;
-	m_v3Target = a_v3Target;
+	m_v3Target = m_v3Position + vector3(0.0f, 0.0f, -1.0f);
 
 	m_v3Above = a_v3Position + glm::normalize(a_v3Upward);
 	
@@ -131,8 +131,8 @@ void Simplex::MyCamera::SetPositionTargetAndUpward(vector3 a_v3Position, vector3
 
 void Simplex::MyCamera::CalculateViewMatrix(void)
 {
-	//Calculate the look at most of your assignment will be reflected in this method
-	m_m4View = glm::lookAt(m_v3Position, m_v3Target, glm::normalize(m_v3Above - m_v3Position)); //position, target, upward
+	//multiply the orientation quat (converted to mat4) by the lookAt matrix to get the camera view
+	m_m4View = glm::toMat4(m_qOrientation)*glm::lookAt(m_v3Position, m_v3Target, (glm::normalize(m_v3Above - m_v3Position)));
 }
 
 void Simplex::MyCamera::CalculateProjectionMatrix(void)
@@ -152,21 +152,38 @@ void Simplex::MyCamera::CalculateProjectionMatrix(void)
 
 void MyCamera::MoveForward(float a_fDistance)
 {
-	//The following is just an example and does not take in account the forward vector (AKA view vector)
-	m_v3Position += m_v3Forward*a_fDistance;
-	m_v3Target += m_v3Forward * a_fDistance;
-	m_v3Above += m_v3Forward * a_fDistance;
+	//move in the forward direction by the amount specified by a_fDistance, in accordance with the orientation
+	m_v3Position += m_v3Forward * m_qOrientation*a_fDistance;
+	m_v3Target += m_v3Forward * m_qOrientation * a_fDistance;
+	m_v3Above += m_v3Forward * m_qOrientation* a_fDistance;
 }
 
 void MyCamera::MoveVertical(float a_fDistance){
-	//move in the up direction by the amount specified by a_fDistance
-	m_v3Position += m_v3Upward * a_fDistance;
-	m_v3Target += m_v3Upward * a_fDistance;
-	m_v3Above += m_v3Upward * a_fDistance;
+	//move in the up direction by the amount specified by a_fDistance, in accordance with the orientation
+	m_v3Position += m_v3Upward * m_qOrientation * a_fDistance;
+	m_v3Target += m_v3Upward * m_qOrientation * a_fDistance;
+	m_v3Above += m_v3Upward * m_qOrientation * a_fDistance;
 }
 void MyCamera::MoveSideways(float a_fDistance){
-	//move in the right direction by the amount specified by a_fDistance
-	m_v3Position += m_v3Rightward * a_fDistance;
-	m_v3Target += m_v3Rightward * a_fDistance;
-	m_v3Above += m_v3Rightward * a_fDistance;
-}//Needs to be defined
+	//move in the right direction by the amount specified by a_fDistance, in accordance with the orientation
+	m_v3Position += m_v3Rightward*m_qOrientation * a_fDistance;
+	m_v3Target += m_v3Rightward*m_qOrientation * a_fDistance;
+	m_v3Above += m_v3Rightward*m_qOrientation * a_fDistance;
+}
+
+void MyCamera::SetOrientation(quaternion orientation) {
+	//Set the orientation of the camera
+	m_qOrientation = m_qOrientation * orientation;
+}
+quaternion MyCamera::GetOrientation() {
+	//Get the orientation of the camera
+	return m_qOrientation;
+}
+void MyCamera::ResetOrientation(void) {
+	//reset orientation
+	m_qOrientation = quaternion();
+	
+
+
+
+}

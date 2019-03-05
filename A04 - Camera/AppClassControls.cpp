@@ -1,4 +1,5 @@
 #include "AppClass.h"
+
 using namespace Simplex;
 //Mouse
 void Application::ProcessMouseMovement(sf::Event a_event)
@@ -107,6 +108,9 @@ void Application::ProcessKeyReleased(sf::Event a_event)
 				m_uActCont %= 8;
 			}
 		}
+		break;
+	case sf::Keyboard::R:
+		m_pCamera->ResetOrientation();
 		break;
 	case sf::Keyboard::Subtract:
 		--m_uActCont;
@@ -368,14 +372,17 @@ void Application::CameraRotation(float a_fSpeed)
 		fDeltaMouse = static_cast<float>(MouseY - CenterY);
 		fAngleX += fDeltaMouse * a_fSpeed;
 	}
+
 	//Change the Yaw and the Pitch of the camera
-	quaternion yOrientationQuat=glm::angleAxis(fAngleY, AXIS_Y);
-	quaternion xOrientationQuat=glm::angleAxis(fAngleX,AXIS_X);
+	quaternion yOrientationQuat=glm::angleAxis(glm::radians(fAngleY), m_pCamera->m_v3Upward*m_pCamera->GetOrientation());
+	quaternion xOrientationQuat=glm::angleAxis(glm::radians(fAngleX),m_pCamera->m_v3Rightward*m_pCamera->GetOrientation());
+	m_pCamera->SetOrientation(yOrientationQuat);
+	m_pCamera->SetOrientation(xOrientationQuat);
+	
 
 
-
-	m_pCamera->SetAbove();
-	m_pCamera->SetTarget();
+	//m_pCamera->SetAbove();
+	//m_pCamera->SetTarget();
 	SetCursorPos(CenterX, CenterY);//Position the mouse in the center
 }
 //Keyboard
@@ -393,19 +400,19 @@ void Application::ProcessKeyboard(void)
 	if (fMultiplier)
 		fSpeed *= 5.0f;
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
 		m_pCamera->MoveForward(fSpeed);
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 		m_pCamera->MoveForward(-fSpeed);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
 		m_pCamera->MoveVertical(fSpeed);
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
 		m_pCamera->MoveVertical(-fSpeed);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 		m_pCamera->MoveSideways(fSpeed);
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 		m_pCamera->MoveSideways(-fSpeed);
 #pragma endregion
 }

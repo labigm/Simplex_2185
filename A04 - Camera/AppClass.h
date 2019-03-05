@@ -9,7 +9,7 @@ Date: 2017/05
 
 #include "ControllerConfiguration.h"
 #include "imgui\ImGuiObject.h"
-
+#include "MyCamera.h"
 #include "MyMeshManager.h"
 namespace Simplex
 {

@@ -1,5 +1,6 @@
 #include "AppClass.h"
 using namespace Simplex;
+//OBB vs. OVB
 void Application::InitVariables(void)
 {
 	//Change this to your name and email

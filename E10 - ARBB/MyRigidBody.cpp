@@ -78,18 +78,48 @@ vector3 MyRigidBody::GetHalfWidth(void) { return m_v3HalfWidth; }
 matrix4 MyRigidBody::GetModelMatrix(void) { return m_m4ToWorld; }
 void MyRigidBody::SetModelMatrix(matrix4 a_m4ModelMatrix)
 {
-	//to save some calculations if the model matrix is the same there is nothing to do here
 	if (a_m4ModelMatrix == m_m4ToWorld)
 		return;
 
+	//Assign the model matrix
 	m_m4ToWorld = a_m4ModelMatrix;
-	
-	//your code goes here---------------------
-	m_v3MinG = m_v3MinL;
-	m_v3MaxG = m_v3MaxL;
-	//----------------------------------------
 
-	//we calculate the distance between min and max vectors
+	//find 8 corners of AOBB
+	std::vector<vector3> corners = std::vector<vector3>();
+	corners.push_back(vector3(m_v3MinL.x, m_v3MinL.y, m_v3MinL.z));
+	corners.push_back(vector3(m_v3MaxL.x, m_v3MinL.y, m_v3MinL.z));
+	corners.push_back(vector3(m_v3MaxL.x, m_v3MaxL.y, m_v3MinL.z));
+	corners.push_back(vector3(m_v3MinL.x, m_v3MaxL.y, m_v3MinL.z));
+	corners.push_back(vector3(m_v3MinL.x, m_v3MinL.y, m_v3MaxL.z));
+	corners.push_back(vector3(m_v3MaxL.x, m_v3MinL.y, m_v3MaxL.z));
+	corners.push_back(vector3(m_v3MaxL.x, m_v3MaxL.y, m_v3MaxL.z));
+	corners.push_back(vector3(m_v3MinL.x, m_v3MaxL.y, m_v3MaxL.z));
+	//globalize them
+	for (int i = 0; i < corners.size(); i++) {
+		corners[i] = vector3(m_m4ToWorld * vector4(corners[i],1));
+	}
+	//get the global min and max
+	m_v3MinG = m_v3MaxG = corners[0];
+	for (int i = 1; i < corners.size(); i++) {
+		if (m_v3MinG.x > corners[i].x) {
+			m_v3MinG.x = corners[i].x;
+		}
+		else if (m_v3MaxG.x < corners[i].x) {
+			m_v3MaxG.x = corners[i].x;
+		}
+		if (m_v3MinG.y > corners[i].y) {
+			m_v3MinG.y = corners[i].y;
+		}
+		else if (m_v3MaxG.y < corners[i].y) {
+			m_v3MaxG.y = corners[i].y;
+		}
+		if (m_v3MinG.z > corners[i].z) {
+			m_v3MinG.z = corners[i].z;
+		}
+		else if (m_v3MaxG.z < corners[i].z) {
+			m_v3MaxG.z = corners[i].z;
+		}
+	}
 	m_v3ARBBSize = m_v3MaxG - m_v3MinG;
 }
 //The big 3

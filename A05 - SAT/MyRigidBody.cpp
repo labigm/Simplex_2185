@@ -86,39 +86,39 @@ void MyRigidBody::SetModelMatrix(matrix4 a_m4ModelMatrix)
 	m_m4ToWorld = a_m4ModelMatrix;
 
 	//Calculate the 8 corners of the cube
-	vector3 v3Corner[8];
+	vector3 v3Cornerotation[8];
 	//Back square
-	v3Corner[0] = m_v3MinL;
-	v3Corner[1] = vector3(m_v3MaxL.x, m_v3MinL.y, m_v3MinL.z);
-	v3Corner[2] = vector3(m_v3MinL.x, m_v3MaxL.y, m_v3MinL.z);
-	v3Corner[3] = vector3(m_v3MaxL.x, m_v3MaxL.y, m_v3MinL.z);
+	v3Cornerotation[0] = m_v3MinL;
+	v3Cornerotation[1] = vector3(m_v3MaxL.x, m_v3MinL.y, m_v3MinL.z);
+	v3Cornerotation[2] = vector3(m_v3MinL.x, m_v3MaxL.y, m_v3MinL.z);
+	v3Cornerotation[3] = vector3(m_v3MaxL.x, m_v3MaxL.y, m_v3MinL.z);
 
 	//Front square
-	v3Corner[4] = vector3(m_v3MinL.x, m_v3MinL.y, m_v3MaxL.z);
-	v3Corner[5] = vector3(m_v3MaxL.x, m_v3MinL.y, m_v3MaxL.z);
-	v3Corner[6] = vector3(m_v3MinL.x, m_v3MaxL.y, m_v3MaxL.z);
-	v3Corner[7] = m_v3MaxL;
+	v3Cornerotation[4] = vector3(m_v3MinL.x, m_v3MinL.y, m_v3MaxL.z);
+	v3Cornerotation[5] = vector3(m_v3MaxL.x, m_v3MinL.y, m_v3MaxL.z);
+	v3Cornerotation[6] = vector3(m_v3MinL.x, m_v3MaxL.y, m_v3MaxL.z);
+	v3Cornerotation[7] = m_v3MaxL;
 
 	//Place them in world space
 	for (uint uIndex = 0; uIndex < 8; ++uIndex)
 	{
-		v3Corner[uIndex] = vector3(m_m4ToWorld * vector4(v3Corner[uIndex], 1.0f));
+		v3Cornerotation[uIndex] = vector3(m_m4ToWorld * vector4(v3Cornerotation[uIndex], 1.0f));
 	}
 
 	//Identify the max and min as the first corner
-	m_v3MaxG = m_v3MinG = v3Corner[0];
+	m_v3MaxG = m_v3MinG = v3Cornerotation[0];
 
 	//get the new max and min for the global box
 	for (uint i = 1; i < 8; ++i)
 	{
-		if (m_v3MaxG.x < v3Corner[i].x) m_v3MaxG.x = v3Corner[i].x;
-		else if (m_v3MinG.x > v3Corner[i].x) m_v3MinG.x = v3Corner[i].x;
+		if (m_v3MaxG.x < v3Cornerotation[i].x) m_v3MaxG.x = v3Cornerotation[i].x;
+		else if (m_v3MinG.x > v3Cornerotation[i].x) m_v3MinG.x = v3Cornerotation[i].x;
 
-		if (m_v3MaxG.y < v3Corner[i].y) m_v3MaxG.y = v3Corner[i].y;
-		else if (m_v3MinG.y > v3Corner[i].y) m_v3MinG.y = v3Corner[i].y;
+		if (m_v3MaxG.y < v3Cornerotation[i].y) m_v3MaxG.y = v3Cornerotation[i].y;
+		else if (m_v3MinG.y > v3Cornerotation[i].y) m_v3MinG.y = v3Cornerotation[i].y;
 
-		if (m_v3MaxG.z < v3Corner[i].z) m_v3MaxG.z = v3Corner[i].z;
-		else if (m_v3MinG.z > v3Corner[i].z) m_v3MinG.z = v3Corner[i].z;
+		if (m_v3MaxG.z < v3Cornerotation[i].z) m_v3MaxG.z = v3Cornerotation[i].z;
+		else if (m_v3MinG.z > v3Cornerotation[i].z) m_v3MinG.z = v3Cornerotation[i].z;
 	}
 
 	//we calculate the distance between min and max vectors
@@ -276,17 +276,109 @@ void MyRigidBody::AddToRenderList(void)
 
 uint MyRigidBody::SAT(MyRigidBody* const a_pOther)
 {
-	/*
-	Your code goes here instead of this comment;
 
-	For this method, if there is an axis that separates the two objects
-	then the return will be different than 0; 1 for any separating axis
-	is ok if you are not going for the extra credit, if you could not
-	find a separating axis you need to return 0, there is an enum in
-	Simplex that might help you [eSATResults] feel free to use it.
-	(eSATResults::SAT_NONE has a value of 0)
-	*/
+	float EPSILON = glm::epsilon<float>();
+	float ra, rb;
+	vector3 halfWidthA, halfWidthB;
+	//get the halfwidth of the two models
+	halfWidthA = this->m_v3HalfWidth;
+	halfWidthB = a_pOther->m_v3HalfWidth;
+
+	matrix3 rotation, absoluteRotation;
+	//set the rotational axes of the models
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			rotation[i][j] = glm::dot(this->GetModelMatrix()[i],a_pOther->GetModelMatrix()[j]);
+		}
+	}
+	//get distance between the models
+	vector3 separation = a_pOther->GetCenterGlobal() - this->GetCenterGlobal();
+	separation = vector3(glm::dot(separation,vector3(this->GetModelMatrix()[0])), glm::dot(separation, vector3(this->GetModelMatrix()[1])), glm::dot(separation, vector3(this->GetModelMatrix()[2])));
+	//get the absolute values of rotation, with threshold of error
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			absoluteRotation[i][j] = abs(rotation[i][j]) + EPSILON;
+		}
+	}
+	//test if separated by this object's x, y, or z axis
+	for (int i = 0; i < 3; i++) {
+		ra = halfWidthA[i];
+		rb = halfWidthB[0] * absoluteRotation[i][0] + halfWidthB[1] * absoluteRotation[i][1] + halfWidthB[2] * absoluteRotation[i][2];
+			if( abs(separation[i]) > ra + rb) {
+				return 1;
+			}
+	}
+	//test if separated by the other object's x, y, or z axis
+	for (int i = 0; i < 3; i++) {
+		ra = halfWidthA[0] * absoluteRotation[0][i] + halfWidthA[1] * absoluteRotation[1][i] + halfWidthA[2] * absoluteRotation[2][i];
+		rb = halfWidthB[i];
+		if (abs(separation[0]*rotation[0][i]+ separation[1] * rotation[1][i]+ separation[2] * rotation[2][i]) > ra + rb) {
+			return 1;
+		}
+	}
+	//test if separated on the cross of this x and other's x axes
+	ra = halfWidthA[1] * absoluteRotation[2][0] + halfWidthA[2] * absoluteRotation[1][0];
+	rb = halfWidthB[1] * absoluteRotation[0][2] + halfWidthB[2] * absoluteRotation[0][1];
+	if (abs(separation[2] * rotation[1][0] - separation[1] * rotation[2][0]) > ra + rb) {
+		return 1;
+	}
+
+	//test if separated on the cross of this x and other's y axes
+	ra = halfWidthA[1] * absoluteRotation[2][1] + halfWidthA[2] * absoluteRotation[1][1];
+	rb = halfWidthB[0] * absoluteRotation[0][2] + halfWidthB[2] * absoluteRotation[0][0];
+	if (abs(separation[2] * rotation[1][1] - separation[1] * rotation[2][1]) > ra + rb) {
+		return 1;
+	}
+
+	//test if separated on the cross of this x and other's z axes
+	ra = halfWidthA[1] * absoluteRotation[2][2] + halfWidthA[2] * absoluteRotation[1][2];
+	rb = halfWidthB[0] * absoluteRotation[0][1] + halfWidthB[1] * absoluteRotation[0][0];
+	if (abs(separation[2] * rotation[1][2] - separation[1] * rotation[2][2]) > ra + rb) {
+		return 1;
+	}
+
+	//test if separated on the cross of this y and other's x axes
+	ra = halfWidthA[0] * absoluteRotation[2][0] + halfWidthA[2] * absoluteRotation[0][0];
+	rb = halfWidthB[1] * absoluteRotation[1][2] + halfWidthB[2] * absoluteRotation[1][1];
+	if (abs(separation[0] * rotation[2][0] - separation[2] * rotation[0][0]) > ra + rb) {
+		return 1;
+	}
+
+	//test if separated on the cross of this y and other's y axes
+	ra = halfWidthA[0] * absoluteRotation[2][1] + halfWidthA[2] * absoluteRotation[0][1];
+	rb = halfWidthB[0] * absoluteRotation[1][2] + halfWidthB[2] * absoluteRotation[1][0];
+	if (abs(separation[0] * rotation[2][1] - separation[2] * rotation[0][1]) > ra + rb) {
+		return 1;
+	}
+
+	//test if separated on the cross of this y and other's z axes
+	ra = halfWidthA[0] * absoluteRotation[2][2] + halfWidthA[2] * absoluteRotation[0][2];
+	rb = halfWidthB[0] * absoluteRotation[1][1] + halfWidthB[1] * absoluteRotation[1][0];
+	if (abs(separation[0] * rotation[2][2] - separation[2] * rotation[0][2]) > ra + rb) {
+		return 1;
+	}
+
+	//test if separated on the cross of this z and other's x axes
+	ra = halfWidthA[0] * absoluteRotation[1][0] + halfWidthA[1] * absoluteRotation[0][0];
+	rb = halfWidthB[1] * absoluteRotation[2][2] + halfWidthB[2] * absoluteRotation[2][1];
+	if (abs(separation[1] * rotation[0][0] - separation[0] * rotation[1][0]) > ra + rb) {
+		return 1;
+	}
+
+	//test if separated on the cross of this z and other's y axes
+	ra = halfWidthA[0] * absoluteRotation[1][1] + halfWidthA[1] * absoluteRotation[0][1];
+	rb = halfWidthB[0] * absoluteRotation[2][2] + halfWidthB[2] * absoluteRotation[2][0];
+	if (abs(separation[1] * rotation[0][1] - separation[0] * rotation[1][1]) > ra + rb) {
+		return 1;
+	}
+
+	//test if separated on the cross of this z and other's z axes
+	ra = halfWidthA[0] * absoluteRotation[1][2] + halfWidthA[1] * absoluteRotation[0][2];
+	rb = halfWidthB[0] * absoluteRotation[2][1] + halfWidthB[1] * absoluteRotation[2][0];
+	if (abs(separation[1] * rotation[0][2] - separation[0] * rotation[1][2]) > ra + rb) {
+		return 1;
+	}
 
 	//there is no axis test that separates this two objects
-	return eSATResults::SAT_NONE;
+	return 0;
 }

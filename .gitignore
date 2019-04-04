@@ -1,43 +1,5 @@
-# Specific files and folders
-_Binary/*D.exe
-_Binary/*D.cfg
-Z_DELETE
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-
-# Visual Studio specifics
-*.suo
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-
-# Fortran module files
-*.mod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-
-# Executables
-*.out
-*.app
-*.sdf
-*.opensdf
-
-# Interpreter
-*.stackdump
-*.opendb
-*.db
-.vs/
-_Binary/*_d.ini
-/C09_SimplexBase
-/E08 - Gimbal Removal.zip
+/.vs

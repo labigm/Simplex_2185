@@ -36,7 +36,8 @@ void Application::InitVariables(void)
 }
 void Application::Update(void)
 {
-	masterOctant->DisplayLeaves();
+	
+	masterOctant->DisplayLeaves(C_GREEN);
 	//Update the system so it knows how much time has passed since the last call
 	m_pSystem->Update();
 

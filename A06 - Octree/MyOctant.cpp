@@ -8,13 +8,14 @@ MyOctant::MyOctant(uint maxLevel, uint idealChildCount)
 	if (!m_pMasterOctant) {
 		SetMasterOctant();
 	}
-	m_uMaxDepth = maxLevel;
-	m_uIdealChildren = idealChildCount;
+	//m_uMaxDepth = maxLevel;
+	//m_uIdealChildren = idealChildCount;
 
 }
 MyOctant::MyOctant(MyOctant* master) {
-	this->m_uMaxDepth = MyOctant::m_uMaxDepth;
-	this->m_uIdealChildren = MyOctant::m_uIdealChildren;
+	Init();
+	//this->m_uMaxDepth = MyOctant::m_uMaxDepth;
+	//this->m_uIdealChildren = MyOctant::m_uIdealChildren;
 
 
 }
@@ -93,14 +94,14 @@ void MyOctant::Subdivide() {
 //The children are arranged according to the cube model below, with each number representing the index of the cube that corner belongs to.
 //      1-----3   
 //	   /|    /|
-//	  / 5   / 7
+//	  / 5---/-7
 //   0-----2 /
 //   |/    |/
 //   4-----6
 
 
 
-	if (this->m_uLevel != m_uMaxDepth && this->m_uChildren > m_uIdealChildren) {
+	//if (this->m_uLevel != m_uMaxDepth && this->m_uChildren > m_uIdealChildren) {
 		this->m_uChildren = 8;
 		
 		MyOctant* child0 = new MyOctant(this->m_pMasterOctant);
@@ -151,23 +152,24 @@ void MyOctant::Subdivide() {
 		}
 
 
-	}
+	//}
 }
 void MyOctant::Display(vector3 a_v3Color) {
 	m_pMeshManager->AddWireCubeToRenderList(glm::translate(IDENTITY_M4, m_v3Center) * glm::scale(vector3(m_fSize)), a_v3Color);
 }
 
 void MyOctant::DisplayLeaves(vector3 a_v3Color) {
-	m_pMeshManager->AddWireCubeToRenderList(glm::translate(IDENTITY_M4, m_v3Center) * glm::scale(vector3(m_fSize)), a_v3Color);
+	
 	if (m_uChildren == 0) {
-		Display();
+		Display(a_v3Color);
 	}
 	else {
 		for (int i = 0; i < 8; i++) {
-			m_pChildren[i]->DisplayLeaves(a_v3Color);
-
+			m_pChildren[i]->DisplayLeaves(a_v3Color));
+			m_pMeshManager->AddWireCubeToRenderList(glm::translate(IDENTITY_M4, m_v3Center) * glm::scale(vector3(m_fSize)), a_v3Color);
 		}
 	}
+	
 
 }
 

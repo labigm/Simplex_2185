@@ -21,6 +21,9 @@ class Application
 	uint m_uOctantID = -1; //Index of Octant to display
 	uint m_uObjects = 0; //Number of objects in the scene
 	uint m_uOctantLevels = 0; //Number of levels in the octree
+	
+
+
 	MyOctant* masterOctant = nullptr;
 private:
 	String m_sProgrammer = "Seth Lambert - sl4956@rit.edu"; //programmer

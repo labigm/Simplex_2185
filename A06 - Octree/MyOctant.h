@@ -7,9 +7,9 @@ namespace Simplex {
 	class MyOctant
 	{
 		MyOctant* m_pMasterOctant;//root octant
-		static uint m_uOctantCount;//number of octants existing
-		static uint m_uMaxDepth;//how deep it can go
-		static uint m_uIdealChildren;//used to signal need for subdivision
+		uint m_uOctantCount=0;//number of octants existing
+		uint m_uMaxDepth;//how deep it can go
+		uint m_uIdealChildren;//used to signal need for subdivision
 
 		MeshManager* m_pMeshManager = nullptr;
 		MyEntityManager* m_pEntityManager = nullptr;
@@ -81,6 +81,7 @@ namespace Simplex {
 		void ConstructTree(uint a_nMaxLevel=3);
 		void AssignIDtoEntity();
 		uint GetOctantCount();
+		void FindObjectsWithinMe();
 
 	};
 }

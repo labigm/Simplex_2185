@@ -31,9 +31,12 @@ void Application::InitVariables(void)
 	}
 	m_uOctantLevels = 1;
 	m_pEntityMngr->Update();
+	masterOctant = new MyOctant(2,5);
+
 }
 void Application::Update(void)
 {
+	masterOctant->Display();
 	//Update the system so it knows how much time has passed since the last call
 	m_pSystem->Update();
 

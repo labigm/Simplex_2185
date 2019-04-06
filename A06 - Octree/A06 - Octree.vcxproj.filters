@@ -54,7 +54,7 @@
     <ClCompile Include="MyRigidBody.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Octant.cpp">
+    <ClCompile Include="MyOctant.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -95,7 +95,7 @@
     <ClInclude Include="MyRigidBody.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Octant.h">
+    <ClInclude Include="MyOctant.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

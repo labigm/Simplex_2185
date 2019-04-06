@@ -42,8 +42,10 @@ namespace Simplex {
 		MyOctant(uint maxLevel = 2, uint idealChildCount = 5);
 		
 		//This constructor is used to subdivide and create child octants
-		MyOctant::MyOctant(MyOctant* master);
+		MyOctant(MyOctant* master);
 		
+		MyOctant();
+
 		//destructor
 		~MyOctant();
 		

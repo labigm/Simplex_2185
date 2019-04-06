@@ -1044,23 +1044,6 @@ c:\program files (x86)\microsoft visual studio\2017\enterprise\vc\tools\msvc\14.
           [
               _Ty=Simplex::MyEntity *
           ]
-  A06 - Octree.vcxproj -> D:\Profiles\sl4956\source\repos\Simplex_2185\Z_DELETE\A06 - Octree_d.exe
-  Copying Shaders...
-  D:\Profiles\sl4956\source\repos\Simplex_2185\include\Simplex\Shaders\Basic-Instanced.vs
-  D:\Profiles\sl4956\source\repos\Simplex_2185\include\Simplex\Shaders\Basic.fs
-  D:\Profiles\sl4956\source\repos\Simplex_2185\include\Simplex\Shaders\Basic.vs
-  D:\Profiles\sl4956\source\repos\Simplex_2185\include\Simplex\Shaders\BasicColor.fs
-  D:\Profiles\sl4956\source\repos\Simplex_2185\include\Simplex\Shaders\BasicColor.vs
-  D:\Profiles\sl4956\source\repos\Simplex_2185\include\Simplex\Shaders\Line.fs
-  D:\Profiles\sl4956\source\repos\Simplex_2185\include\Simplex\Shaders\Line.vs
-  D:\Profiles\sl4956\source\repos\Simplex_2185\include\Simplex\Shaders\Minimal.fs
-  D:\Profiles\sl4956\source\repos\Simplex_2185\include\Simplex\Shaders\Minimal.vs
-  D:\Profiles\sl4956\source\repos\Simplex_2185\include\Simplex\Shaders\MinimalRed.fs
-  D:\Profiles\sl4956\source\repos\Simplex_2185\include\Simplex\Shaders\Simplex.fs
-  D:\Profiles\sl4956\source\repos\Simplex_2185\include\Simplex\Shaders\Simplex.vs
-  D:\Profiles\sl4956\source\repos\Simplex_2185\include\Simplex\Shaders\Skybox.fs
-  D:\Profiles\sl4956\source\repos\Simplex_2185\include\Simplex\Shaders\Skybox.vs
-  D:\Profiles\sl4956\source\repos\Simplex_2185\include\Simplex\Shaders\Text.fs
-  D:\Profiles\sl4956\source\repos\Simplex_2185\include\Simplex\Shaders\Text.vs
-  D:\Profiles\sl4956\source\repos\Simplex_2185\include\Simplex\Shaders\Wireframe.fs
-  17 File(s) copied
+MyOctant.obj : error LNK2001: unresolved external symbol "private: static unsigned int Simplex::MyOctant::m_uMaxDepth" (?m_uMaxDepth@MyOctant@Simplex@@0IA)
+MyOctant.obj : error LNK2001: unresolved external symbol "private: static unsigned int Simplex::MyOctant::m_uIdealChildren" (?m_uIdealChildren@MyOctant@Simplex@@0IA)
+D:\Profiles\sl4956\source\repos\Simplex_2185\Z_DELETE\A06 - Octree_d.exe : fatal error LNK1120: 2 unresolved externals

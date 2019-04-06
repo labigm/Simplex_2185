@@ -111,6 +111,13 @@ void Application::ProcessKeyReleased(sf::Event a_event)
 		bFPSControl = !bFPSControl;
 		m_pCameraMngr->SetFPS(bFPSControl);
 		break;
+	
+		//debug subdivision
+	case sf::Keyboard::P:
+		masterOctant->Subdivide();
+	
+	
+	
 	case sf::Keyboard::PageUp:
 		++m_uOctantID;
 		/*

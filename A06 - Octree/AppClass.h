@@ -23,7 +23,7 @@ class Application
 	uint m_uOctantLevels = 0; //Number of levels in the octree
 	MyOctant* masterOctant = nullptr;
 private:
-	String m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu"; //programmer
+	String m_sProgrammer = "Seth Lambert - sl4956@rit.edu"; //programmer
 
 	static ImGuiObject gui; //GUI object
 	bool m_bGUI_Main = true; //show Main GUI window?

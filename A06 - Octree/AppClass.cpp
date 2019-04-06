@@ -32,6 +32,7 @@ void Application::InitVariables(void)
 	m_uOctantLevels = 1;
 	m_pEntityMngr->Update();
 	masterOctant = new MyOctant(2,5);
+	masterOctant->Subdivide();
 
 }
 void Application::Update(void)

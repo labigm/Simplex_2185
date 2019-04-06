@@ -10,6 +10,9 @@ namespace Simplex {
 		uint m_uOctantCount=0;//number of octants existing
 		uint m_uMaxDepth;//how deep it can go
 		uint m_uIdealChildren;//used to signal need for subdivision
+		uint currentDepth=0;//the current depth of the tree
+		
+
 
 		MeshManager* m_pMeshManager = nullptr;
 		MyEntityManager* m_pEntityManager = nullptr;
@@ -68,7 +71,7 @@ namespace Simplex {
 		vector3 GetMaxGlobal();
 
 
-		bool IsColliding(uint a_RBIndex);
+		bool IsColliding(uint a_RBIndex, uint other);
 		void Display(vector3 a_v3Color = C_GREEN);
 		void DisplayLeaves(vector3 a_v3Color = C_GREEN);
 		void ClearEntityList();

@@ -10,6 +10,7 @@ MyOctant::MyOctant(uint maxLevel, uint idealChildCount)
 	}
 	m_uMaxDepth = maxLevel;
 	m_uIdealChildren = idealChildCount;
+	m_lPopulated.push_back(this);
 
 }
 MyOctant::MyOctant(MyOctant* master) {
@@ -103,7 +104,7 @@ void MyOctant::Subdivide() {
 		m_pMasterOctant->m_uOctantCount += 8;
 		if (this->m_uLevel != m_uMaxDepth) {
 			this->m_uChildren = 8;
-
+			m_pMasterOctant->currentDepth++;
 			MyOctant* child0 = new MyOctant(this->m_pMasterOctant);
 			MyOctant* child1 = new MyOctant(this->m_pMasterOctant);
 			MyOctant* child2 = new MyOctant(this->m_pMasterOctant);
@@ -144,6 +145,7 @@ void MyOctant::Subdivide() {
 			m_pChildren[7] = child7;
 
 			for (int i = 0; i < 8; i++) {
+				m_lPopulated.push_back(m_pChildren[i]);
 				m_pChildren[i]->m_pMasterOctant = this->m_pMasterOctant;
 				m_pChildren[i]->m_pParent = this;
 				m_pChildren[i]->m_uLevel = this->m_uLevel + 1;
@@ -165,7 +167,17 @@ void MyOctant::Display(vector3 a_v3Color) {
 }
 
 void MyOctant::DisplayLeaves(vector3 a_v3Color) {
-	
+	//m_lEntityList.clear();
+	//FindObjectsWithinMe();
+	if (m_lEntityList.size() > 0&&this->m_uLevel==m_pMasterOctant->currentDepth) {
+		for (int i = 0; i < m_lEntityList.size()-1; i++) {
+			for (int j = i+1; j < m_lEntityList.size(); j++) {
+				IsColliding(i, j);
+
+			}
+		}
+		
+	}
 	if (IsLeaf()) {
 		Display(a_v3Color);
 	}
@@ -175,6 +187,18 @@ void MyOctant::DisplayLeaves(vector3 a_v3Color) {
 			m_pMeshManager->AddWireCubeToRenderList(glm::translate(IDENTITY_M4, m_v3Center) * glm::scale(vector3(m_fSize)), a_v3Color);
 		}
 	}
+}
+
+bool MyOctant::IsColliding(uint thisObject, uint other ) {
+	MyRigidBody* thisEntity = m_pEntityManager->GetRigidBody(m_pEntityManager->GetUniqueID(thisObject));
+	MyRigidBody* otherEntity = m_pEntityManager->GetRigidBody(m_pEntityManager->GetUniqueID(other));
+	return thisEntity->IsColliding(otherEntity);
+
+}
+
+void MyOctant::ConstructPopulatedList() {
+	
+
 }
 
 bool MyOctant::IsLeaf() {
@@ -213,7 +237,6 @@ void MyOctant::FindObjectsWithinMe() {
 		else if (maxTemp.z < GetMinGlobal().z) {
 			m_lEntityList.pop_back();
 		}
-
 
 	}
 }

@@ -34,21 +34,59 @@ vector3 MyOctant::GetMinGlobal() {
 }
 
 
-MyOctant::MyOctant() {
+
+MyOctant::MyOctant(MyOctant const& other) {
+	this->m_pMasterOctant= other.m_pMasterOctant;
+
+	m_pMeshManager = other.m_pMeshManager;
+	m_pEntityManager = other.m_pEntityManager;
+
+	m_uID = other.m_uID;
+	m_uLevel = other.m_uLevel;
+	m_uChildren = other.m_uChildren;
+
+	m_fSize = other.m_fSize;
+
+	m_v3Center = other.m_v3Center; 
+	m_v3Min = other.m_v3Min;
+	m_v3Max =other.m_v3Max;
+
+	m_pParent = other.m_pParent;
+	//m_pChildren[8]=other.m_pChildren;
+
+	m_lEntityList = other.m_lEntityList;
+	m_lPopulated = other.m_lPopulated;
+
+	m_uOctantCount = m_pMasterOctant->m_uOctantCount;
+	m_uMaxDepth= m_pMasterOctant->m_uMaxDepth;
+	m_uIdealChildren = m_pMasterOctant->m_uIdealChildren;
+	currentDepth = m_pMasterOctant->m_uIdealChildren;
+	DisplayLevel = m_pMasterOctant->DisplayLevel;
+
 
 }
 
 
 MyOctant::~MyOctant()
 {
+	/*MeshManager::ReleaseInstance();
+	MyEntityManager::ReleaseInstance();
+	delete m_pMasterOctant;
+	m_pMasterOctant = nullptr;
+	delete m_pParent;
+	m_pParent = nullptr;
+	delete[] m_pChildren;*/
+
 }
 
-
+//sets this octant as the root
 void MyOctant::SetMasterOctant() {
 	m_pMasterOctant = this;
 	this->m_uLevel = 0;
 	CreateMasterSize();
 }
+
+//sets the dimension of the master
 void MyOctant::CreateMasterSize() {
 	uint ObjectCount = m_pEntityManager->GetEntityCount();
 	vector3 Max = m_pEntityManager->GetRigidBody(m_pEntityManager->GetUniqueID(0))->GetMaxGlobal();//set the max to the max of the first object
@@ -104,7 +142,7 @@ void MyOctant::Subdivide() {
 		m_pMasterOctant->m_uOctantCount += 8;
 		if (this->m_uLevel != m_uMaxDepth) {
 			this->m_uChildren = 8;
-			m_pMasterOctant->currentDepth++;
+			//m_pMasterOctant->currentDepth++;
 			MyOctant* child0 = new MyOctant(this->m_pMasterOctant);
 			MyOctant* child1 = new MyOctant(this->m_pMasterOctant);
 			MyOctant* child2 = new MyOctant(this->m_pMasterOctant);
@@ -145,6 +183,7 @@ void MyOctant::Subdivide() {
 			m_pChildren[7] = child7;
 
 			for (int i = 0; i < 8; i++) {
+				
 				m_lPopulated.push_back(m_pChildren[i]);
 				m_pChildren[i]->m_pMasterOctant = this->m_pMasterOctant;
 				m_pChildren[i]->m_pParent = this;
@@ -152,9 +191,20 @@ void MyOctant::Subdivide() {
 				m_pChildren[i]->m_fSize = this->m_fSize / 2.0f;
 				m_pChildren[i]->m_v3Center = (m_pChildren[i]->GetMaxGlobal() + m_pChildren[i]->GetMinGlobal()) / 2.0f;
 				m_pChildren[i]->FindObjectsWithinMe();
+
+				if (m_pChildren[i]->m_uLevel > m_pMasterOctant->currentDepth) {
+					m_pMasterOctant->currentDepth = m_pChildren[i]->m_uLevel;
+				}
+				m_pMasterOctant->DisplayLevel = m_pMasterOctant->currentDepth;
+
 			}
 		}
+		//subdivide if it makes sense to
+		if (currentDepth < m_uMaxDepth && m_lEntityList.size()>0 && m_lEntityList.size() > m_uIdealChildren) {
+			Subdivide();
+		}
 	}
+	//if this is not a leaf, subdivide its children
 	else {
 		for (int i = 0; i < 8; i++) {
 			m_pChildren[i]->Subdivide();
@@ -163,25 +213,46 @@ void MyOctant::Subdivide() {
 }
 
 void MyOctant::Display(vector3 a_v3Color) {
-	m_pMeshManager->AddWireCubeToRenderList(glm::translate(IDENTITY_M4, m_v3Center) * glm::scale(vector3(m_fSize)), a_v3Color);
-	if (currentDepth < m_uMaxDepth && m_lEntityList.size()>0 && m_lEntityList.size() > m_uIdealChildren) {
-		Subdivide();
-		return;
+	if (m_uLevel <= m_pMasterOctant->DisplayLevel) {
+		m_pMeshManager->AddWireCubeToRenderList(glm::translate(IDENTITY_M4, m_v3Center) * glm::scale(vector3(m_fSize)), a_v3Color);
 	}
-	//FindObjectsWithinMe();
-	int count = 0;
+	
 	if (m_lEntityList.size() > 0) {
 		for (int i = 0; i < m_lEntityList.size() - 1; i++) {
 			for (int j = i + 1; j < m_lEntityList.size(); j++) {
-				IsColliding(i, j);
-				count++;
+				IsColliding(i, j); //I'm not sure why, but the collision check is not working. All Objects are being checked for collisions against those in their octant
+				//but they are not correctly identifying collisions
+				
 			}
 		}
-		count += 0;
 	}
 	
 }
+void MyOctant::KillChildren() {
+	if (IsLeaf()) {
+		this->m_uChildren = 0;
+		delete this;
+	}
+	else {
+		for (int i = 0; i < 8; i++) {
+			m_pChildren[i]->KillChildren();
+			this->m_uChildren = 0;
+		}
+	}
+}
 
+void MyOctant::KillChildrenAtLevel(uint level) {
+	if (this->m_uLevel == level) {
+		KillChildren();
+	}
+	else {
+		if(!IsLeaf()){
+			for (int i = 0; i < 8; i++) {
+				m_pChildren[i]->KillChildrenAtLevel(level);
+			}
+		}
+	}
+}
 void MyOctant::DisplayLeaves(vector3 a_v3Color) {
 	
 	if (IsLeaf()) {
@@ -189,8 +260,10 @@ void MyOctant::DisplayLeaves(vector3 a_v3Color) {
 	}
 	else {
 		for (int i = 0; i < 8; i++) {
-			m_pChildren[i]->DisplayLeaves(a_v3Color);
-			m_pMeshManager->AddWireCubeToRenderList(glm::translate(IDENTITY_M4, m_v3Center) * glm::scale(vector3(m_fSize)), a_v3Color);
+			m_pChildren[i]->DisplayLeaves(a_v3Color); 
+			if (m_uLevel <= m_pMasterOctant->DisplayLevel) {
+				m_pMeshManager->AddWireCubeToRenderList(glm::translate(IDENTITY_M4, m_v3Center) * glm::scale(vector3(m_fSize)), a_v3Color);
+			}
 		}
 	}
 }
@@ -198,13 +271,14 @@ void MyOctant::DisplayLeaves(vector3 a_v3Color) {
 bool MyOctant::IsColliding(uint thisObject, uint other ) {
 	MyRigidBody* thisEntity = m_pEntityManager->GetRigidBody(m_pEntityManager->GetUniqueID(thisObject));
 	MyRigidBody* otherEntity = m_pEntityManager->GetRigidBody(m_pEntityManager->GetUniqueID(other));
+	
+	if (thisEntity->IsColliding(otherEntity)) {
+		thisEntity->AddToRenderList();
+		otherEntity->AddToRenderList();
+	}
 	return thisEntity->IsColliding(otherEntity);
 }
 
-void MyOctant::ConstructPopulatedList() {
-	
-
-}
 
 bool MyOctant::IsLeaf() {
 	if (this->m_uChildren == 0) {
@@ -218,6 +292,7 @@ uint MyOctant::GetOctantCount() {
 }
 
 void MyOctant::FindObjectsWithinMe() {
+	//use arbb logic to see if this box conatins entities
 	if (this->m_pParent != nullptr) {
 		
 		for (int i = 0; i < m_pParent->m_lEntityList.size(); i++) {

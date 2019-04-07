@@ -151,10 +151,9 @@ void MyOctant::Subdivide() {
 				m_pChildren[i]->m_uLevel = this->m_uLevel + 1;
 				m_pChildren[i]->m_fSize = this->m_fSize / 2.0f;
 				m_pChildren[i]->m_v3Center = (m_pChildren[i]->GetMaxGlobal() + m_pChildren[i]->GetMinGlobal()) / 2.0f;
-				FindObjectsWithinMe();
+				m_pChildren[i]->FindObjectsWithinMe();
 			}
 		}
-
 	}
 	else {
 		for (int i = 0; i < 8; i++) {
@@ -162,24 +161,31 @@ void MyOctant::Subdivide() {
 		}
 	}
 }
+
 void MyOctant::Display(vector3 a_v3Color) {
 	m_pMeshManager->AddWireCubeToRenderList(glm::translate(IDENTITY_M4, m_v3Center) * glm::scale(vector3(m_fSize)), a_v3Color);
+	if (currentDepth < m_uMaxDepth && m_lEntityList.size()>0 && m_lEntityList.size() > m_uIdealChildren) {
+		Subdivide();
+		return;
+	}
+	//FindObjectsWithinMe();
+	int count = 0;
+	if (m_lEntityList.size() > 0) {
+		for (int i = 0; i < m_lEntityList.size() - 1; i++) {
+			for (int j = i + 1; j < m_lEntityList.size(); j++) {
+				IsColliding(i, j);
+				count++;
+			}
+		}
+		count += 0;
+	}
+	
 }
 
 void MyOctant::DisplayLeaves(vector3 a_v3Color) {
-	//m_lEntityList.clear();
-	//FindObjectsWithinMe();
-	if (m_lEntityList.size() > 0&&this->m_uLevel==m_pMasterOctant->currentDepth) {
-		for (int i = 0; i < m_lEntityList.size()-1; i++) {
-			for (int j = i+1; j < m_lEntityList.size(); j++) {
-				IsColliding(i, j);
-
-			}
-		}
-		
-	}
+	
 	if (IsLeaf()) {
-		Display(a_v3Color);
+		Display(C_YELLOW);
 	}
 	else {
 		for (int i = 0; i < 8; i++) {
@@ -193,7 +199,6 @@ bool MyOctant::IsColliding(uint thisObject, uint other ) {
 	MyRigidBody* thisEntity = m_pEntityManager->GetRigidBody(m_pEntityManager->GetUniqueID(thisObject));
 	MyRigidBody* otherEntity = m_pEntityManager->GetRigidBody(m_pEntityManager->GetUniqueID(other));
 	return thisEntity->IsColliding(otherEntity);
-
 }
 
 void MyOctant::ConstructPopulatedList() {
@@ -202,7 +207,7 @@ void MyOctant::ConstructPopulatedList() {
 }
 
 bool MyOctant::IsLeaf() {
-	if (m_uChildren == 0) {
+	if (this->m_uChildren == 0) {
 		return true;
 	}
 	return false;
@@ -213,31 +218,32 @@ uint MyOctant::GetOctantCount() {
 }
 
 void MyOctant::FindObjectsWithinMe() {
-	uint ObjectCount = m_pEntityManager->GetEntityCount();
-	for (int i = ObjectCount - 1; i > 0; i--) {
-		m_lEntityList.push_back(i);
-		String ID = m_pEntityManager->GetUniqueID(i);
-		vector3 maxTemp = m_pEntityManager->GetRigidBody(ID)->GetMaxGlobal();
-		vector3 minTemp = m_pEntityManager->GetRigidBody(ID)->GetMinGlobal();
-		if (minTemp.x > GetMaxGlobal().x) {
-			m_lEntityList.pop_back();
+	if (this->m_pParent != nullptr) {
+		
+		for (int i = 0; i < m_pParent->m_lEntityList.size(); i++) {
+			m_lEntityList.push_back(this->m_pParent->m_lEntityList[i]);
+			String ID = m_pEntityManager->GetUniqueID(i);
+			vector3 maxTemp = m_pEntityManager->GetRigidBody(ID)->GetMaxGlobal();
+			vector3 minTemp = m_pEntityManager->GetRigidBody(ID)->GetMinGlobal();
+			if (minTemp.x > this->GetMaxGlobal().x) {
+				m_lEntityList.pop_back();
+			}
+			else if (minTemp.y > this->GetMaxGlobal().y) {
+				m_lEntityList.pop_back();
+			}
+			else if (minTemp.z > this->GetMaxGlobal().z) {
+				m_lEntityList.pop_back();
+			}
+			else if (maxTemp.x < this->GetMinGlobal().x) {
+				m_lEntityList.pop_back();
+			}
+			else if (maxTemp.y < this->GetMinGlobal().y) {
+				m_lEntityList.pop_back();
+			}
+			else if (maxTemp.z < this->GetMinGlobal().z) {
+				m_lEntityList.pop_back();
+			}
 		}
-		else if (minTemp.y > GetMaxGlobal().y) {
-			m_lEntityList.pop_back();
-		}
-		else if (minTemp.z > GetMaxGlobal().z) {
-			m_lEntityList.pop_back();
-		}
-		else if (maxTemp.x < GetMinGlobal().x) {
-			m_lEntityList.pop_back();
-		}
-		else if (maxTemp.y < GetMinGlobal().y) {
-			m_lEntityList.pop_back();
-		}
-		else if (maxTemp.z < GetMinGlobal().z) {
-			m_lEntityList.pop_back();
-		}
-
 	}
 }
 

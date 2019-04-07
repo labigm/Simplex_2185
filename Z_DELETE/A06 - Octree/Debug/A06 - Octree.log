@@ -1044,8 +1044,9 @@ c:\program files (x86)\microsoft visual studio\2017\enterprise\vc\tools\msvc\14.
           [
               _Ty=Simplex::MyEntity *
           ]
-d:\profiles\sl4956\source\repos\simplex_2185\a06 - octree\myoctant.cpp(173): warning C4018: '<': signed/unsigned mismatch
 d:\profiles\sl4956\source\repos\simplex_2185\a06 - octree\myoctant.cpp(174): warning C4018: '<': signed/unsigned mismatch
+d:\profiles\sl4956\source\repos\simplex_2185\a06 - octree\myoctant.cpp(175): warning C4018: '<': signed/unsigned mismatch
+d:\profiles\sl4956\source\repos\simplex_2185\a06 - octree\myoctant.cpp(223): warning C4018: '<': signed/unsigned mismatch
   A06 - Octree.vcxproj -> D:\Profiles\sl4956\source\repos\Simplex_2185\Z_DELETE\A06 - Octree_d.exe
   Copying Shaders...
   D:\Profiles\sl4956\source\repos\Simplex_2185\include\Simplex\Shaders\Basic-Instanced.vs
